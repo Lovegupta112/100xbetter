@@ -11,6 +11,7 @@ const [amount,setAmount]=useState(0);
 
 const sendSol=async()=>{
  try{
+  console.log({receiverPubkey});
    const transaction=new Transaction();
    const toPubkey=new PublicKey(receiverPubkey);
    const instruction=SystemProgram.transfer({
@@ -28,6 +29,8 @@ const sendSol=async()=>{
     console.log('Error: ',error);
  }
 }
+
+console.log({receiverPubkey});
 
     return (
         <>
