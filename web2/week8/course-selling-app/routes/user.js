@@ -2,7 +2,10 @@ const {Router}=require('express');
 const userRouter=Router();
 const {userModel}=require('../db');
 const bcrypt=require('bcrypt');
-
+const jwt=require('jsonwebtoken');
+require('dotenv').config();
+const jwtSecret=process.env.JWT_SECRET_KEY;
+const {authUserMiddleware}=require('../middlewares/authMiddleware');
 
 userRouter.post('/signup',async (req,res)=>{
     const {email,password,firstName,lastName}=req.body;
@@ -17,7 +20,7 @@ userRouter.post('/signup',async (req,res)=>{
         lastName
     })
 
-    res.status(200).json({message:'SuccessFully signedin'});
+    res.status(200).json({message:'SuccessFully signedup !'});
 
 })
 
@@ -28,7 +31,7 @@ userRouter.post('/signin',async (req,res)=>{
     if(!email || !password){
         return res.status(400).json({error:'Invalid credentials'});
     }
-    const userInfo=userModel.findOne({email});
+    const userInfo=await userModel.findOne({email});
 
     if(!userInfo){
         return res.status(200).json({message:`email doesn't exist !`});
@@ -39,12 +42,12 @@ userRouter.post('/signin',async (req,res)=>{
         return res.status(400).json({error:'Invalid credentials'});
     }
 
-    const verify=await j
+    const accessToken=jwt.sign({userId:userInfo._id,role:'user'},jwtSecret);
     
-
+    res.status(200).json({accessToken});
 })
 
-userRouter.get('/purchase',(req,res)=>{
+userRouter.get('/purchase',authUserMiddleware,(req,res)=>{
 
 })
 

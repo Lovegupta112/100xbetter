@@ -14,7 +14,7 @@ app.use('/api/v1/admin',adminRouter);
 
 
 
-async function main(params) {
+async function main() {
     await mongoose.connect(process.env.MONGODB_CONNECTION_URI);
     app.listen(3000,()=>console.log("App is running .."));
 }
