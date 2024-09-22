@@ -4,7 +4,7 @@ const {userModel}=require('../db');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 require('dotenv').config();
-const jwtSecret=process.env.JWT_SECRET_KEY;
+const jwtSecret=process.env.JWT_USER_SECRET;
 const {authUserMiddleware}=require('../middlewares/authMiddleware');
 
 userRouter.post('/signup',async (req,res)=>{
@@ -29,20 +29,20 @@ userRouter.post('/signin',async (req,res)=>{
     const {email,password}=req.body;
     
     if(!email || !password){
-        return res.status(400).json({error:'Invalid credentials'});
+        return res.status(403).json({error:'Invalid credentials'});
     }
     const userInfo=await userModel.findOne({email});
 
     if(!userInfo){
-        return res.status(200).json({message:`email doesn't exist !`});
+        return res.status(403).json({message:`email doesn't exist !`});
     }
     const match=await bcrypt.compare(password,userInfo.password);
     
     if(!match){
-        return res.status(400).json({error:'Invalid credentials'});
+        return res.status(403).json({error:'Invalid credentials'});
     }
 
-    const accessToken=jwt.sign({userId:userInfo._id,role:'user'},jwtSecret);
+    const accessToken=jwt.sign({userId:userInfo._id},jwtSecret);
     
     res.status(200).json({accessToken});
 })

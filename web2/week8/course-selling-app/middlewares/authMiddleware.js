@@ -1,15 +1,17 @@
 const jwt=require('jsonwebtoken');
 require('dotenv').config();
-const jwtSecret=process.env.JWT_SECRET_KEY;
+const jwtAdminSecret=process.env.JWT_ADMIN_SECRET;
+const jwtUserSecret=process.env.JWT_USER_SECRET;
 
 
 const authUserMiddleware=(req,res,next)=>{
  try{
   const authorization=req.headers.authorization;
 
-  const verified= jwt.verify(authorization,jwtSecret);
-   
-   if(verified && verified.role=='user'){
+  const verified= jwt.verify(authorization,jwtUserSecret);
+
+  console.log('verified 13..',verified);
+   if(verified ){
         next();
    }
    else{
@@ -24,9 +26,10 @@ const authAdminMiddleware=(req,res,next)=>{
  try{
   const authorization=req.headers.authorization;
 
-  const verified= jwt.verify(authorization,jwtSecret);
+  const verified= jwt.verify(authorization,jwtAdminSecret);
 
-   if(verified && verified.role=='admin'){
+   if(verified){ 
+      req.adminId=verified.userId
         next();
    }
    else{
