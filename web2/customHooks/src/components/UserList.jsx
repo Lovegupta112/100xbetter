@@ -5,11 +5,11 @@ const UserList = () => {
   // const [users,setUsers]=useState([]);
 
   // basic fetching
-  //     const getUsers=async()=>{
-  //         const resp= await fetch('https://jsonplaceholder.typicode.com/users/');
-  //         const data=await resp.json();
-  //         setUsers(Array.isArray(data)?data:[data]);
-  //     }
+      // const getUsers=async()=>{
+      //     const resp= await fetch('https://jsonplaceholder.typicode.com/users/');
+      //     const data=await resp.json();
+      //     setUsers(Array.isArray(data)?data:[data]);
+      // }
 
   //   useEffect(() => {
   //      getUsers();
@@ -24,7 +24,7 @@ const UserList = () => {
     loading,
     data: users,
     error,
-  } = useFetch(`https://jsonplaceholder.typicode.com/users/${selectedUserId}`);
+  } = useFetch(`https://jsonplaceholder.typicode.com/users/${selectedUserId}`,5);
 
   console.log("users..", users);
 

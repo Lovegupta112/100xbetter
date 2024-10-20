@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useFetch = (url) => {
+const useFetch = (url,refetchSec) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState("");
@@ -20,9 +20,26 @@ const useFetch = (url) => {
     }
   };
 
+  // useEffect(() => {
+  //   fetchUrl(url);
+  // }, [url]);
+
+  // useFetch With re-fetching ---
+
   useEffect(() => {
-    fetchUrl(url);
-  }, [url]);
+   
+    if(refetchSec){
+    const interval= setInterval(()=>{
+      console.log("log...",refetchSec);
+        fetchUrl(url);
+      },[refetchSec*1000])
+
+
+      return ()=>{
+          clearInterval(interval);
+      }
+    }
+  }, [url,refetchSec]);
 
   return {
     loading,
