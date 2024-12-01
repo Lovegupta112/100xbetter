@@ -1,4 +1,6 @@
 export interface ChatContextType{
+    roomName:string;
+    setRoomName:(name:string)=>void
     isCreatedRoom?:boolean;
     setIsCreatedRoom?:(value:boolean)=>void;
     socket:WebSocket | undefined;

@@ -4,7 +4,7 @@ import { ChatContextType, MessageType } from "../types/chat";
 
 const Chat = () => {
 
-  const {socket,email}=useContext(ChatContext) as ChatContextType;
+  const {socket,email,roomName}=useContext(ChatContext) as ChatContextType;
 
   const [messages,setMessages]=useState<MessageType[]>([]);
   const messageRef=useRef<HTMLInputElement>(null);
@@ -40,18 +40,18 @@ const Chat = () => {
 
   return (
     <div className="border rounded-md w-3/4 h-4/5 flex flex-col">
-         <h1 className="bg-indigo-600 rounded-md text-center text-2xl">Chat Messages</h1>
+         <h1 className="bg-indigo-600 rounded-md text-center text-2xl">Chat Messages - {roomName} Room</h1>
         <div className="flex flex-col gap-4 grow p-4 overflow-y-auto">
          {messages?.map((obj,index)=>{
-            return obj.email!=email?(<div key={`${obj.email}${index}`} className="list-none bg-slate-400 w-fit px-6 py-3 rounded-lg rounded-bl-none">
-              <li>
-              {obj.message}
-              </li>
-              <li>{obj.time}</li>
+            return obj.email!=email?(<div key={`${obj.email}${index}`} className="list-none bg-slate-400 w-fit px-4 py-3 rounded-2xl rounded-bl-none">
+               <li className="font-bold text-slate-600">{obj?.email}</li>
+              <li>{obj?.message}</li>
+              <li>{obj?.time}</li>
             </div>):
-             (<div key={`${obj.email}${index}`} className="list-none self-end bg-red-300 w-fit px-6 py-3 rounded-lg rounded-bl-none">
-              <li>{obj.message}</li>
-             <li>{obj.time}</li> 
+             (<div key={`${obj.email}${index}`} className="list-none self-end bg-red-300 w-fit px-4 py-3 rounded-2xl rounded-br-none">
+              <li className="font-bold text-slate-600">{obj?.email}</li>
+              <li>{obj?.message}</li>
+             <li>{obj?.time}</li> 
             </div>)
          })}
         </div>

@@ -10,9 +10,10 @@ const ChatContextProvider=(props:any)=>{
     const [isCreatedRoom,setIsCreatedRoom]=useState(false);
     const [socket,setSocket]=useState<WebSocket>();
     const [email,setEmail]=useState<string>('');
+    const [roomName,setRoomName]=useState<string>('');
 
 
-    return <ChatContext.Provider value={{isCreatedRoom,setIsCreatedRoom,socket ,setSocket,email,setEmail}}>
+    return <ChatContext.Provider value={{isCreatedRoom,setIsCreatedRoom,socket ,setSocket,email,setEmail,roomName,setRoomName}}>
         {props.children}
     </ChatContext.Provider>
 }

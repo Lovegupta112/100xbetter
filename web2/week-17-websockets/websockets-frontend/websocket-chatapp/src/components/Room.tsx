@@ -4,7 +4,7 @@ import { ChatContextType } from '../types/chat';
 
 const Room = () => {
 
- const {socket,setIsCreatedRoom,setSocket,setEmail}=useContext(ChatContext) as ChatContextType;
+ const {socket,setIsCreatedRoom,setSocket,setEmail,setRoomName}=useContext(ChatContext) as ChatContextType;
  const roomNameRef=useRef<HTMLInputElement>(null);
  const emailNameRef=useRef<HTMLInputElement>(null);
  
@@ -19,6 +19,7 @@ const Room = () => {
   
     const ws=new WebSocket('http://localhost:8080');
     setSocket(ws);
+    setRoomName(roomName);
   
     ws.onopen=()=>{
       ws.send(JSON.stringify({
