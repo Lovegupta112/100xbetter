@@ -11,7 +11,6 @@ wss.on('connection',(socket:WebSocket)=>{
 
         const obj=JSON.parse(message as unknown as string);
 
-        console.log('13..',obj);
         if(obj.type=='join'){
             let room:string=obj.payload.roomId;
             let email:string=obj.payload.email;
@@ -31,6 +30,7 @@ wss.on('connection',(socket:WebSocket)=>{
         }
         else if(obj.type=='chat'){
             let message=obj.payload.message;
+            let time=obj.payload.time;
             socketRooms.forEach((value,key)=>{
              let roomSockets=value;
               let isAnySocketExist=roomSockets.find((sc)=>sc.socket==socket);
@@ -40,6 +40,7 @@ wss.on('connection',(socket:WebSocket)=>{
                   const response={
                       "message": message,
                        "email":isAnySocketExist.email,
+                       "time":time
                   }
                  sc.socket.send(JSON.stringify(response));
                 })

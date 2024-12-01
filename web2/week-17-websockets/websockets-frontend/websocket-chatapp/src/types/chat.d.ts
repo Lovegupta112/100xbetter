@@ -6,3 +6,9 @@ export interface ChatContextType{
     email:string;
     setEmail:(value:string)=>void;
 }
+
+export interface MessageType{
+    message:string;
+    time:string;
+    email:string;
+}

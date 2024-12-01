@@ -1,13 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../context/ChatContext";
-import { ChatContextType } from "../types/chat";
+import { ChatContextType, MessageType } from "../types/chat";
 
 const Chat = () => {
 
   const {socket,email}=useContext(ChatContext) as ChatContextType;
 
-  const [messages,setMessages]=useState<string[]>([]);
-  const [myMessages,setMyMessages]=useState<string[]>([]);
+  const [messages,setMessages]=useState<MessageType[]>([]);
   const messageRef=useRef<HTMLInputElement>(null);
 
 
@@ -18,12 +17,7 @@ const Chat = () => {
     }
     socket.onmessage=(event)=>{
       const newMessage=JSON.parse(event.data);
-     if(newMessage?.email!=email){
-       setMessages((prevMessage)=>[...prevMessage,newMessage.message]);
-     }
-     else{
-      setMyMessages((prevMessage)=>[...prevMessage,newMessage.message])
-     }
+       setMessages((prevMessage)=>[...prevMessage,newMessage]);
     }
   },[socket]);
 
@@ -36,6 +30,7 @@ const Chat = () => {
     "type": "chat",
     "payload": {
       "message": value,
+       "time":new Date().toLocaleString()
     }
   };
   socket?.send(JSON.stringify(payload));
@@ -43,16 +38,21 @@ const Chat = () => {
  }
 
 
-
   return (
     <div className="border rounded-md w-3/4 h-4/5 flex flex-col">
          <h1 className="bg-indigo-600 rounded-md text-center text-2xl">Chat Messages</h1>
         <div className="flex flex-col gap-4 grow p-4 overflow-y-auto">
-         {messages?.map((message,index)=>{
-            return <li key={`${message}${index}`} className="list-none bg-slate-400 w-fit px-6 py-3 rounded-lg rounded-bl-none">{message}</li>
-         })}
-         {myMessages?.map((message,index)=>{
-            return <li key={`${message}${index}`} className="list-none self-end bg-red-300 w-fit px-6 py-3 rounded-lg rounded-bl-none">{message}</li>
+         {messages?.map((obj,index)=>{
+            return obj.email!=email?(<div key={`${obj.email}${index}`} className="list-none bg-slate-400 w-fit px-6 py-3 rounded-lg rounded-bl-none">
+              <li>
+              {obj.message}
+              </li>
+              <li>{obj.time}</li>
+            </div>):
+             (<div key={`${obj.email}${index}`} className="list-none self-end bg-red-300 w-fit px-6 py-3 rounded-lg rounded-bl-none">
+              <li>{obj.message}</li>
+             <li>{obj.time}</li> 
+            </div>)
          })}
         </div>
         <div className="flex gap-1 p-3 items-center">
