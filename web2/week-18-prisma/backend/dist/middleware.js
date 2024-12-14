@@ -11,7 +11,6 @@ const authMiddleware = (req, res, next) => {
     try {
         const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
         const isAuthenticatedUser = jsonwebtoken_1.default.verify(token, jwtSecret);
-        console.log("isAuthenticatedUser: ", isAuthenticatedUser);
         if (isAuthenticatedUser) {
             req.headers.userId = isAuthenticatedUser.userId;
             next();

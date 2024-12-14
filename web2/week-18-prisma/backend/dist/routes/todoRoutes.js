@@ -37,7 +37,6 @@ todoRouter.post("/create-todo", (req, res) => __awaiter(void 0, void 0, void 0, 
                 userId: Number(userId)
             }
         });
-        console.log('createdTodo..', createdTodo);
         res.status(200).send('Todo created SuccessFully !');
     }
     catch (error) {

@@ -44,4 +44,20 @@ userRouter.post('/create-user', (req, res) => __awaiter(void 0, void 0, void 0, 
         res.status(400).send(error);
     }
 }));
+userRouter.put('/update-user/:email', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const updateFields = req.body.updateFields;
+        const { email } = req.params;
+        const updatedRes = yield prisma.user.update({
+            where: {
+                email
+            },
+            data: Object.assign({}, updateFields)
+        });
+        console.log('49..', updatedRes);
+    }
+    catch (error) {
+        res.status(400).send(error);
+    }
+}));
 exports.default = userRouter;

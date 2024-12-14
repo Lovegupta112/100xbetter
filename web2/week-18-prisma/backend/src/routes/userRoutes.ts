@@ -33,4 +33,23 @@ userRouter.post('/create-user',async(req,res)=>{
     }
 })
 
+userRouter.put('/update-user/:email',async(req,res)=>{
+  try{
+   const updateFields=req.body.updateFields;
+   const {email}=req.params;
+   
+   const updatedRes=await prisma.user.update({
+    where:{
+      email
+    },
+    data:{
+     ...updateFields
+    }
+   })
+   console.log('49..',updatedRes);
+  }
+  catch(error){
+    res.status(400).send(error);
+  }
+})
 export default userRouter;
