@@ -3,22 +3,11 @@
 import { Input } from "@repo/ui/input";
 import { Button } from "@repo/ui/button";
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function RoomChat() {
 
- const roomInputRef=useRef<HTMLInputElement>();
- const router=useRouter();
-
-
- const joinRoom=()=>{
-  const value=roomInputRef?.current?.value;
-   if(!value){
-    alert('please enter room name !');
-    return ;
-   }
-   router.push(`/room/${value}`);
- }
+ 
+    const chatRefInput=useRef<HTMLInputElement>();
 
   return (
     <div
@@ -34,21 +23,23 @@ export default function Home() {
       <div
         style={{
           backgroundColor: "purple",
-          height: "30%",
-          width: "50%",
+          height: "80%",
+          width: "70%",
           display: "flex",
           flexDirection: "column",
-          justifyContent:'space-between',
-          padding:'2rem 0.5rem'
         }}
       >
         <h1 style={{ width: "fit-content", margin: "0 auto" }}>Chat App</h1>
+         <div style={{flexGrow:1,backgroundColor: "royalblue",}}>
+          hll
+         </div>
         <div  style={{
           display: "flex",
-          gap:'1rem'
         }}>
-          <Input type="text" placeholder="Enter your room name here"  ref={roomInputRef}/>
-          <Button size="medium" onClick={joinRoom}>Join Room</Button>
+          <Input type="text" placeholder="Enter your message here" ref={chatRefInput} />
+          <Button size="medium" onClick={()=>{
+            
+          }}>Submit</Button>
         </div>
       </div>
     </div>

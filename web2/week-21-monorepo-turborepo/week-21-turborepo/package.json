@@ -1,5 +1,5 @@
 {
-  "name": "week-21-turborepo",
+  "name": "week-21-turborepo-chatapp",
   "private": true,
   "scripts": {
     "build": "turbo build",
