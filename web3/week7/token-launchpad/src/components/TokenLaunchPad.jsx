@@ -4,10 +4,12 @@ import {
   getMinimumBalanceForRentExemptMint,
   MINT_SIZE,
   TOKEN_PROGRAM_ID,
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  mintTo
 } from "@solana/spl-token";
 import { useState } from "react";
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
+import { useWallet, useConnection} from "@solana/wallet-adapter-react";
+import { Keypair, SystemProgram, Transaction,PublicKey } from "@solana/web3.js";
 
 const TokenLaunchPad = () => {
   const [tokenInfo, setTokenInfo] = useState({
@@ -51,6 +53,21 @@ const TokenLaunchPad = () => {
     transaction.partialSign(keypair);
     const res = await wallet.sendTransaction(transaction, connection);
     console.log("Res: ", res);
+
+
+
+    const [associatedTokenAddress,bump]=PublicKey.findProgramAddressSync([
+      keypair.publicKey.toBuffer(),
+      userPublicKey.toBuffer(),
+      TOKEN_PROGRAM_ID.toBuffer()
+    ],
+    ASSOCIATED_TOKEN_PROGRAM_ID
+  )
+
+   console.log("associatedTokenAddress: ",associatedTokenAddress);
+
+
+   
   };
 
   const handleTokenInfo = (e) => {
