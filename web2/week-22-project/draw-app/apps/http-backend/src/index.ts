@@ -1,26 +1,14 @@
 import express from 'express';
+import authRouter from './routes/auth';
 const app=express();
 const port=3002;
+
+app.use(express.json());
 
 app.get('/api/v1/serverHealth',(req,res)=>{
     res.send('Server is Healthy.');
 })
 
-app.post('/api/v1/signup',(req,res)=>{
-
-    const {email,password}=req.body;
-
-    //todo: hashed password and store in db --- 
-
-    res.status(200).send('successfully signedup!');
-})
-app.post('/api/v1/signin',(req,res)=>{
-
-    const {email,password}=req.body;
-
-    //todo: sign jwt token and send and check also email exist or not --- 
-
-    res.status(200).send('Successfully signed In !');
-})
+app.post('/api/v1/auth',authRouter);
 
 app.listen(port,()=>console.log(`Server is listening on port: ${port}`));
