@@ -34,12 +34,32 @@ authRouter.post("/signup", async (req, res) => {
   }
 });
 
-authRouter.post("/signin", (req, res) => {
+authRouter.post("/signin", async (req, res) => {
   const { email, password } = req.body;
 
-  //todo: sign jwt token and send and check also email exist or not ---
+  const isUserExist = await prismaClient.user.findFirst({
+    where: email,
+  });
+
+  if (!isUserExist) {
+    res.status(404).json({ message: "Email doesn't exist." });
+    return;
+  }
+
+  const isCorrectPassword = bcrypt.compare(password, isUserExist.password);
+
+  if (!isCorrectPassword) {
+    res.status(404).json({ message: "Incorrect Password." });
+    return;
+  }
 
   const token = jwt.sign({ email }, JWT_SECRET_KEY);
+
+  res.cookie('jwt',token,{
+    httpOnly:true,
+    maxAge:3600,
+    secure:process.env.NODE_ENV=='production'
+  })
 
   res.status(200).json({ message: "Successfully signed In !", token });
 });
