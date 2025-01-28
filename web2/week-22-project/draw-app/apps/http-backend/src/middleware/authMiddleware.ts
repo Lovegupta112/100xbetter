@@ -3,7 +3,7 @@ import { JWT_SECRET_KEY } from "@repo/backend-common/config";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 interface AuthRequest extends Request {
-  userEmail: string;
+  userEmail?: string;
 }
 const authMiddleware = (
   req: AuthRequest,

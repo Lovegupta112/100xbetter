@@ -13,6 +13,7 @@ authRouter.post("/signup", async (req, res) => {
 
     const isUserExist = await prismaClient.user.findFirst({ select: email });
 
+    console.log('isUserExist',isUserExist);
     if (isUserExist) {
       res.status(409).json({ error: "Email already exist" });
       return;
@@ -24,6 +25,8 @@ authRouter.post("/signup", async (req, res) => {
       email,
       password: hashedPassword,
     };
+
+    console.log('28..',reqBody);
 
     await prismaClient.user.create({
       data: reqBody,
