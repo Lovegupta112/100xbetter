@@ -11,7 +11,7 @@ authRouter.post("/signup", async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    const isUserExist = await prismaClient.user.findFirst({ select: email });
+    const isUserExist = await prismaClient.user.findFirst({ where: {email} });
 
     console.log('isUserExist',isUserExist);
     if (isUserExist) {
@@ -38,10 +38,11 @@ authRouter.post("/signup", async (req, res) => {
 });
 
 authRouter.post("/signin", async (req, res) => {
+ try{
   const { email, password } = req.body;
 
   const isUserExist = await prismaClient.user.findFirst({
-    where: email,
+    where: {email},
   });
 
   if (!isUserExist) {
@@ -49,14 +50,14 @@ authRouter.post("/signin", async (req, res) => {
     return;
   }
 
-  const isCorrectPassword = bcrypt.compare(password, isUserExist.password);
+  const isCorrectPassword = await  bcrypt.compare(password, isUserExist.password);
 
   if (!isCorrectPassword) {
     res.status(404).json({ message: "Incorrect Password." });
     return;
   }
 
-  const token = jwt.sign({ email }, JWT_SECRET_KEY);
+  const token = jwt.sign({ userId:isUserExist.id }, JWT_SECRET_KEY);
 
   res.cookie('jwt',token,{
     httpOnly:true,
@@ -65,6 +66,11 @@ authRouter.post("/signin", async (req, res) => {
   })
 
   res.status(200).json({ message: "Successfully signed In !", token });
+
+ }
+ catch(error){
+  res.sendStatus(500);
+ }
 });
 
 export default authRouter;
