@@ -9,9 +9,9 @@ const authMiddleware = (
   next: NextFunction
 ) => {
   try {
-    console.log('req..',req.headers);
-    const token = req.headers.authorization?.split("")[1];
-
+    // console.log('req..12',req.cookies);
+    const token = req.headers.authorization?.split(" ")[1];
+    
     
     if (!token) {
       res.status(401).send("Token not present.");
