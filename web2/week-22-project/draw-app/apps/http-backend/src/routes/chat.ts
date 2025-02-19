@@ -14,11 +14,12 @@ chatRouter.get('/:roomId',async (req,res)=>{
       const messages= await prismaClient.chat.findMany({
        where:{
         roomId
-       }
+       },
+       orderBy:{id:"desc"},
+       take:50
       })
 
-      console.log('16..',messages);
-      res.status(200);
+      res.status(200).json(messages);
     }
     catch(error){
        res.sendStatus(500);

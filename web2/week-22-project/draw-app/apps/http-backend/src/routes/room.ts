@@ -35,5 +35,17 @@ roomRouter.post('/createRoom',async (req:AuthRequest,res)=>{
     }
 
 })
+roomRouter.get('/:slug',async(req,res)=>{
+    try{
+      const slug=req.params.slug;
+      const data=await prismaClient.room.findFirst({
+          where:{slug}
+      })
+      res.status(200).json(data);
+    }
+    catch(error){
+        res.sendStatus(500);
+    }
+})
 
 export default roomRouter;
