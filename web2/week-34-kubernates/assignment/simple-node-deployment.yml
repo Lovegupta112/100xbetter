@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: simple-node-deployment
+spec: 
+   replicas: 1
+   selector:
+      matchLabels: 
+         app: simple-node
+   template:
+      metadata:
+         labels:
+           app: simple-node
+      spec:
+        containers:
+         - name: simple-node
+           image: itzlg/simple-node:v1
+           env: 
+            - name: DATABASE_URL
+              # value: postgresql://postgres:admin@pg-service.default.svc.cluster.local:30008/postgres
+              value: postgresql://postgres:admin@pg-service:5432/postgres
+           ports: 
+             - containerPort: 3000
